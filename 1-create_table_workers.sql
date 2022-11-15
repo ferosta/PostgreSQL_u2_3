@@ -180,32 +180,32 @@ SELECT * FROM Workers w LEFT JOIN
 (SELECT Id, 1+K1+K2+K3+K4 AS "Коэффициент" FROM 
 (SELECT Id, Q1, Q2, Q3, Q4 
 ,CASE 
-	WHEN Q1 = 'E' THEN 0.2
-	WHEN Q1 = 'D' THEN 0.1
+	WHEN Q1 = 'A' THEN 0.2
+	WHEN Q1 = 'B' THEN 0.1
 	WHEN Q1 = 'C' THEN 0.0
-	WHEN Q1 = 'B' THEN -0.1
-	WHEN Q1 = 'A' THEN -0.2
+	WHEN Q1 = 'D' THEN -0.1
+	WHEN Q1 = 'E' THEN -0.2
 END K1
 ,CASE 
-	WHEN Q2 = 'E' THEN 0.2
-	WHEN Q2 = 'D' THEN 0.1
+	WHEN Q2 = 'A' THEN 0.2
+	WHEN Q2 = 'B' THEN 0.1
 	WHEN Q2 = 'C' THEN 0.0
-	WHEN Q2 = 'B' THEN -0.1
-	WHEN Q2 = 'A' THEN -0.2
+	WHEN Q2 = 'D' THEN -0.1
+	WHEN Q2 = 'E' THEN -0.2
 END K2
 ,CASE 
-	WHEN Q3 = 'E' THEN 0.2
-	WHEN Q3 = 'D' THEN 0.1
+	WHEN Q3 = 'A' THEN 0.2
+	WHEN Q3 = 'B' THEN 0.1
 	WHEN Q3 = 'C' THEN 0.0
-	WHEN Q3 = 'B' THEN -0.1
-	WHEN Q3 = 'A' THEN -0.2
+	WHEN Q3 = 'D' THEN -0.1
+	WHEN Q3 = 'E' THEN -0.2
 END K3
 ,CASE 
-	WHEN Q4 = 'E' THEN 0.2
-	WHEN Q4 = 'D' THEN 0.1
+	WHEN Q4 = 'A' THEN 0.2
+	WHEN Q4 = 'B' THEN 0.1
 	WHEN Q4 = 'C' THEN 0.0
-	WHEN Q4 = 'B' THEN -0.1
-	WHEN Q4 = 'A' THEN -0.2
+	WHEN Q4 = 'D' THEN -0.1
+	WHEN Q4 = 'E' THEN -0.2
 END K4
 FROM rating r ) as K) as KK
 ON w.Id = KK.Id
@@ -213,13 +213,14 @@ ORDER BY "Коэффициент" DESC;
 
 
 -- экспериментальный вариант расчета коэффициента
-SELECT * FROM Workers w LEFT JOIN
-(SELECT Id  
-	,0.1*(ASCII(CAST(r.Q1 AS char(1)))-67)
-	+0.1*(ASCII(CAST(r.Q2 AS char(1)))-67)
-	+0.1*(ASCII(CAST(r.Q3 AS char(1)))-67)
-	+0.1*(ASCII(CAST(r.Q4 AS char(1)))-67) + 1  AS "Коэффициент"
-FROM rating r) as rk 
+SELECT * FROM Workers w 
+LEFT JOIN
+		(SELECT Id  
+			,0.1*(-ASCII(CAST(r.Q1 AS char(1)))+67)
+			+0.1*(-ASCII(CAST(r.Q2 AS char(1)))+67)
+			+0.1*(-ASCII(CAST(r.Q3 AS char(1)))+67)
+			+0.1*(-ASCII(CAST(r.Q4 AS char(1)))+67) + 1  AS "Коэффициент"
+		FROM rating r) as rk 
 ON w.Id = rk.Id
 ORDER BY "Коэффициент" DESC;
 
