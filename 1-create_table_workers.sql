@@ -103,11 +103,11 @@ INSERT INTO Rating(
 	Q4 
 )
 VALUES
-(1,'A','B','C','D'),
+(1,'D','B','C','D'),
 (2,'B','C','D','E'),
 (3,'B','D','A','E'),
 (4,'A','E','D','C'),
-(5,'A','D','B','E'),
+(5,'E','D','B','E'),
 (6,'B','C','C','D');
 
 
@@ -152,7 +152,10 @@ SELECT Id as "Таб.№", FIO as "ФИО", 0.1*round(10*( current_date - Begint
 SELECT Id as "Таб.№" FROM Workers w WHERE w.Drive_License ; 
 
 --o Выведите номера сотрудников, которые хотя бы за 1 квартал получили оценку D или E
-SELECT Id as "Таб.№" FROM Rating r WHERE r.Q1 = 'D' OR r.Q1 = 'E'; 
+SELECT Id as "Таб.№" FROM Rating r WHERE r.Q1 = 'D' OR r.Q1 = 'E' 
+									  or r.Q2 = 'D' OR r.Q2 = 'E'
+									  or r.Q3 = 'D' OR r.Q3 = 'E'
+									  or r.Q4 = 'D' OR r.Q4 = 'E' ; 
 
 --o Выведите самую высокую зарплату в компании.
 SELECT max(salary) as "Заработная плата" FROM Workers w; 
